@@ -12,7 +12,11 @@
     <artifactId>kafka-example</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>kafka-example</name>
+    <packaging>pom</packaging>
     <description>kafka-example</description>
+    <modules>
+        <module>users</module>
+    </modules>
     <url/>
     <licenses>
         <license/>
