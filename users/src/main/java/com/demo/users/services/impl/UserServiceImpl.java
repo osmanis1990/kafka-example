@@ -1,5 +1,6 @@
 package com.demo.users.services.impl;
 
+import com.demo.users.configurations.Topic;
 import com.demo.users.controllers.request.CreateUserDto;
 import com.demo.users.controllers.request.UpdateUserDto;
 import com.demo.users.controllers.response.UserDto;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
     public UserDto create(CreateUserDto dto) {
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
                 .map(userRepository::save)
                 .map(userMapper::toDto)
                 .orElse(null);
-        kafkaTemplate.send("users", user == null ? "created user error" : user.toString());
+        kafkaTemplate.send(Topic.USER_CREATED.getValue(), user);
 
         return user;
     }
