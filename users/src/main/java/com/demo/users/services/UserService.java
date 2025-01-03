@@ -3,7 +3,6 @@ package com.demo.users.services;
 import com.demo.users.controllers.request.CreateUserDto;
 import com.demo.users.controllers.request.UpdateUserDto;
 import com.demo.users.controllers.response.UserDto;
-import com.demo.users.models.User;
 
 import java.util.List;
 import java.util.Optional;

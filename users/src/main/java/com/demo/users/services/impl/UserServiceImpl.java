@@ -7,6 +7,7 @@ import com.demo.users.repositories.UserRepository;
 import com.demo.users.services.UserService;
 import com.demo.users.services.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,13 +22,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public UserDto create(CreateUserDto dto) {
-        return Optional.ofNullable(userMapper.toModel(dto))
+        UserDto user = Optional.ofNullable(userMapper.toModel(dto))
                 .map(userRepository::save)
                 .map(userMapper::toDto)
                 .orElse(null);
+        kafkaTemplate.send("users", user == null ? "created user error" : user.toString());
+
+        return user;
     }
 
     @Override

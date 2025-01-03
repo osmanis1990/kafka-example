@@ -4,6 +4,7 @@ import com.demo.users.controllers.request.CreateUserDto;
 import com.demo.users.controllers.request.UpdateUserDto;
 import com.demo.users.controllers.response.UserDto;
 import com.demo.users.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> create(@RequestBody CreateUserDto dto) {
+    public ResponseEntity<UserDto> create(@RequestBody @Valid CreateUserDto dto) {
         return ResponseEntity.ok(userService.create(dto));
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> partialUpdate(@PathVariable UUID id, @RequestBody UpdateUserDto dto) {
+    public ResponseEntity<Void> partialUpdate(@PathVariable UUID id, @RequestBody @Valid UpdateUserDto dto) {
         userService.update(id, dto);
         return ResponseEntity.accepted().build();
     }
