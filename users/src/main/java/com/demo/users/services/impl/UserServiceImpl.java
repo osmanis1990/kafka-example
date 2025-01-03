@@ -31,7 +31,10 @@ public class UserServiceImpl implements UserService {
                 .map(userRepository::save)
                 .map(userMapper::toDto)
                 .orElse(null);
-        kafkaTemplate.send(Topic.USER_CREATED.getValue(), user);
+
+        for (int i = 0; i < 20000000; i++) {
+            kafkaTemplate.send(Topic.USER_CREATED.getValue(), user);
+        }
 
         return user;
     }
