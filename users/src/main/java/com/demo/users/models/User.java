@@ -1,5 +1,6 @@
 package com.demo.users.models;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -43,5 +44,8 @@ public class User {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Embedded
+    private Address address;
 
 }

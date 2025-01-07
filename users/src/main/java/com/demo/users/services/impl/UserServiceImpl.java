@@ -8,6 +8,7 @@ import com.demo.users.repositories.UserRepository;
 import com.demo.users.services.UserService;
 import com.demo.users.services.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -31,10 +33,7 @@ public class UserServiceImpl implements UserService {
                 .map(userRepository::save)
                 .map(userMapper::toDto)
                 .orElse(null);
-
-        for (int i = 0; i < 20000000; i++) {
-            kafkaTemplate.send(Topic.USER_CREATED.getValue(), user);
-        }
+        kafkaTemplate.send(Topic.USER_CREATED.getValue(), user);
 
         return user;
     }

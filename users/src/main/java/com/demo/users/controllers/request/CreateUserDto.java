@@ -10,5 +10,6 @@ public record CreateUserDto(
         String lastName,
         @NotEmpty
         @Email
-        String email) {
+        String email,
+        CreateAddressDto address) {
 }
